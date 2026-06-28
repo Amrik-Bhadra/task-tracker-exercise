@@ -11,16 +11,22 @@ export function useTasks(query, status, page, pageSize) {
     setLoading(true);
     setError(null);
 
-    fetchTasks({ query, status, page, pageSize })
-      .then((data) => {
-        setTasks(data.items);
-        setTotal(data.total);
-      })
-      .catch((err) => {
-        setError(err.message);
-      }).finally(() => {
-        setLoading(false);
-      });
+    const timerId = setTimeout(() => {
+      fetchTasks({ query, status, page, pageSize })
+        .then((data) => {
+          setTasks(data.items);
+          setTotal(data.total);
+        })
+        .catch((err) => {
+          setError(err.message);
+        }).finally(() => {
+          setLoading(false);
+        });
+    }, 300);
+
+    return () => {
+      clearTimeout(timerId);
+    }
   }, [query, status, page, pageSize]);
 
   return { tasks, total, loading, error };
