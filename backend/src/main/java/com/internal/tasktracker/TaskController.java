@@ -47,6 +47,9 @@ public class TaskController {
 
         List<Task> allResults = taskRepository.searchTasks(searchTerm, normalizedStatus);
 
+        if(page < 1) page = 1;
+        if(pageSize < 1 || pageSize > 100) pageSize = 10;
+        
         int start = (page - 1) * pageSize;
         int end = Math.min(start + pageSize, allResults.size());
         List<Task> pageResults = (start < allResults.size())
