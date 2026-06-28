@@ -9,15 +9,17 @@ export function useTasks(query, status, page, pageSize) {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
 
     fetchTasks({ query, status, page, pageSize })
       .then((data) => {
         setTasks(data.items);
         setTotal(data.total);
-        setLoading(false);
       })
       .catch((err) => {
         setError(err.message);
+      }).finally(() => {
+        setLoading(false);
       });
   }, [query, status, page, pageSize]);
 
